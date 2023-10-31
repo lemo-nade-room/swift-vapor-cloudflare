@@ -15,18 +15,43 @@ let package = Package(
       name: "CloudflareStream",
       targets: ["CloudflareStream"]),
   ],
+  dependencies: [
+    // 💧 A server-side Swift web framework.
+    .package(url: "https://github.com/vapor/vapor.git", from: "4.83.1")
+  ],
   targets: [
     // Targets are the basic building blocks of a package, defining a module or a test suite.
     // Targets can depend on other targets in this package and products from dependencies.
     .target(
-      name: "CloudflareImages"),
+      name: "CloudflareImages",
+      dependencies: [
+        .product(name: "Vapor", package: "vapor"),
+        .target(name: "CloudflareLibrary"),
+      ]),
     .testTarget(
       name: "CloudflareImagesTests",
-      dependencies: ["CloudflareImages"]),
+      dependencies: [
+        "CloudflareImages",
+        .product(name: "XCTVapor", package: "vapor"),
+      ]),
+
     .target(
-      name: "CloudflareStream"),
+      name: "CloudflareStream",
+      dependencies: [
+        .product(name: "Vapor", package: "vapor"),
+        .target(name: "CloudflareLibrary"),
+      ]),
     .testTarget(
       name: "CloudflareStreamTests",
-      dependencies: ["CloudflareStream"]),
+      dependencies: [
+        "CloudflareStream",
+        .product(name: "XCTVapor", package: "vapor"),
+      ]),
+
+    .target(
+      name: "CloudflareLibrary",
+      dependencies: [
+        .product(name: "Vapor", package: "vapor")
+      ]),
   ]
 )

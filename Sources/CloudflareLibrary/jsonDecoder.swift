@@ -29,4 +29,4 @@ private func prepareJSONDecoder() -> JSONDecoder {
   return jsonDecoder
 }
 
-let jsonDecoder = prepareJSONDecoder()
+public let jsonDecoder = prepareJSONDecoder()

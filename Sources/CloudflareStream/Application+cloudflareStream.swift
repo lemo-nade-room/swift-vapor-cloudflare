@@ -7,7 +7,7 @@ extension Vapor.Application {
   }
 
   /// Cloudflare Stream Client
-  public var cloudflareStream: CloudflareStream {
+  public var cloudflareStream: CloudflareStreamClient {
     get {
       guard let cloudflareStream = storage[CloudflareStreamClientKey.self] else {
         fatalError("Cloudflare Stream Client is not configured. Use app.cloudflareStream = ...")

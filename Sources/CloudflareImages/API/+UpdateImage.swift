@@ -1,3 +1,4 @@
+import CloudflareLibrary
 import Vapor
 
 extension CloudflareImagesClient {

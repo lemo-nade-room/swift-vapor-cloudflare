@@ -7,4 +7,4 @@ private func prepareDateFormatterRFC3339() -> DateFormatter {
   return formatter
 }
 
-let dateFormatterRFC3339 = prepareDateFormatterRFC3339()
+public let dateFormatterRFC3339 = prepareDateFormatterRFC3339()
