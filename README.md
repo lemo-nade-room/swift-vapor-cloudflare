@@ -80,12 +80,19 @@ import CloudflareImages
 public func configure(_ app: Application) async throws {
     // uncomment to serve files from /Public folder
     // app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
+
     app.cloudflareImages = .init(
         client: app.client,
         accountIdentifier: Environment.get("CLOUDFLARE_ACCOUNT_IDENTIFIER")!,
         apiToken: Environment.get("CLOUDFLARE_API_TOKEN")!
     )
-  
+
+    app.cloudflareStream = .init(
+        client: app.client,
+        accountIdentifier: Environment.get("CLOUDFLARE_ACCOUNT_IDENTIFIER")!,
+        apiToken: Environment.get("CLOUDFLARE_API_TOKEN")!
+    )
+
     // register routes
     try routes(app)
 }
