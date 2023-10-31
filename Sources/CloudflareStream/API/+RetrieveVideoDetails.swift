@@ -3,65 +3,29 @@ import Vapor
 
 extension CloudflareStreamClient {
 
-  /// List Videos
+  /// Retrieve Video Details
   ///
   /// @Links(visualStyle: compactGrid) {
-  /// - https://developers.cloudflare.com/api/operations/stream-videos-list-videos
+  /// - https://developers.cloudflare.com/api/operations/stream-videos-retrieve-video-details
   /// }
-  public func listVideos(
-    asc: Bool? = nil, creator: String? = nil, end: Date? = nil, includeCounts: Bool? = nil,
-    search: String? = nil, start: Date? = nil, status: ListVideosStatus? = nil,
-    type: ListVideosType? = nil
-  ) async throws -> ListVideos {
+  public func retrieveVideoDetails(identifier: String) async throws -> RetrieveVideoDetails {
     let response = try await client.get(
-      "https://api.cloudflare.com/client/v4/accounts/\(accountIdentifier)/stream"
+      "https://api.cloudflare.com/client/v4/accounts/\(accountIdentifier)/stream/\(identifier)"
     ) { req in
       req.headers.bearerAuthorization = .init(token: apiToken)
       req.headers.contentType = .json
-      try req.query.encode([
-        "asc": asc.map(String.init),
-        "creator": creator,
-        "end": end.map({ $0.ISO8601Format() }),
-        "include_counts": includeCounts.map(String.init),
-        "search": search,
-        "start": start.map({ $0.ISO8601Format() }),
-        "status": status.map(\.rawValue),
-        "type": type.map(\.rawValue),
-      ])
     }
-    return try response.content.decode(ListVideos.self, using: jsonDecoder)
+    return try response.content.decode(RetrieveVideoDetails.self, using: jsonDecoder)
   }
 }
 
-public enum ListVideosStatus: String, Hashable, Content, CaseIterable {
-  case pendingupload, downloading, queued, inprogress, ready, error
-}
-
-public enum ListVideosType: String, Hashable, Content, CaseIterable {
-  case vod, live
-}
-
-public struct ListVideos: Hashable, Content, CloudflareStreamResponseContent {
+public struct RetrieveVideoDetails: Hashable, Content, Sendable, CloudflareStreamResponseContent {
   public var errors: [ResponseError]
   public var messages: [ResponseMessage]?
-  public var result: [Result]?
+  public var result: Result?
   public var success: Bool
-  public var range: Int?
-  public var total: Int?
 
-  public init(
-    errors: [ResponseError], messages: [ResponseMessage], result: [Result]? = nil, success: Bool,
-    range: Int? = nil, total: Int? = nil
-  ) {
-    self.errors = errors
-    self.messages = messages
-    self.result = result
-    self.success = success
-    self.range = range
-    self.total = total
-  }
-
-  public struct Result: Hashable, Content {
+  public struct Result: Hashable, Content, Sendable {
     public var allowedOrigins: [String]?
     public var created: Date?
     public var creator: String?
@@ -94,7 +58,7 @@ public struct ListVideos: Hashable, Content, CloudflareStreamResponseContent {
       readyToStreamAt: Date? = nil, requireSignedURLs: Bool? = nil, scheduledDeletion: Date? = nil,
       size: Double? = nil, status: Status? = nil, thumbnail: String? = nil,
       thumbnailTimestampPct: Double? = nil, uid: String? = nil, uploadExpiry: Date? = nil,
-      uploaded: Date? = nil, watermark: Watermark? = nil
+      uploaded: Date? = nil, watermark: Watermark
     ) {
       self.allowedOrigins = allowedOrigins
       self.created = created
@@ -121,7 +85,7 @@ public struct ListVideos: Hashable, Content, CloudflareStreamResponseContent {
       self.watermark = watermark
     }
 
-    public struct Input: Hashable, Content {
+    public struct Input: Hashable, Content, Sendable {
       public var height: Int
       public var width: Int
 
@@ -131,7 +95,7 @@ public struct ListVideos: Hashable, Content, CloudflareStreamResponseContent {
       }
     }
 
-    public struct Playback: Hashable, Content {
+    public struct Playback: Hashable, Content, Sendable {
       public var dash: String?
       public var hls: String?
 
@@ -141,7 +105,7 @@ public struct ListVideos: Hashable, Content, CloudflareStreamResponseContent {
       }
     }
 
-    public struct Status: Hashable, Content {
+    public struct Status: Hashable, Content, Sendable {
       public var errorReasonCode: String?
       public var errorReasonText: String?
       public var pctComplete: String?
@@ -157,12 +121,12 @@ public struct ListVideos: Hashable, Content, CloudflareStreamResponseContent {
         self.state = state
       }
 
-      public enum State: String, Hashable, Content {
+      public enum State: String, Hashable, Content, Sendable {
         case pendingupload, downloading, queued, inprogress, ready, error
       }
     }
 
-    public struct Watermark: Hashable, Content {
+    public struct Watermark: Hashable, Content, Sendable {
       public var created: Date?
       public var downloadedFrom: String?
       public var height: Int?
@@ -194,5 +158,6 @@ public struct ListVideos: Hashable, Content, CloudflareStreamResponseContent {
         self.width = width
       }
     }
+
   }
 }
