@@ -8,14 +8,19 @@ extension CloudflareImagesClient {
   /// @Links(visualStyle: compactGrid) {
   /// - https://developers.cloudflare.com/api/operations/cloudflare-images-list-images-v2
   /// }
-  public func listImagesV2() async throws -> ListImagesV2 {
+  public func listImagesV2(perPage: Int? = nil, sortOrder: CloudflareLibrary.SortOrder? = nil)
+    async throws -> ListImagesV2
+  {
     let response = try await client.get(
-      "https://api.cloudflare.com/client/v4/accounts/\(accountIdentifier)/images/v2",
-      headers: [
-        "Authorization": "Bearer \(apiToken)",
-        "Content-Type": "application/json",
-      ]
-    )
+      "https://api.cloudflare.com/client/v4/accounts/\(accountIdentifier)/images/v2"
+    ) { req in
+      try req.query.encode([
+        "per_page": perPage.map(String.init),
+        "sort_order": sortOrder.map(\.rawValue),
+      ])
+      req.headers.bearerAuthorization = .init(token: apiToken)
+      req.headers.contentType = .json
+    }
     return try response.content.decode(ListImagesV2.self, using: jsonDecoder)
   }
 }

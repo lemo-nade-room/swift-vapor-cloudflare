@@ -18,16 +18,14 @@ extension CloudflareImagesClient {
       requireSignedURLs: requireSignedURLs
     )
     let response = try await client.patch(
-      "https://api.cloudflare.com/client/v4/accounts/\(accountIdentifier)/images/v1/\(imageId)",
-      headers: [
-        "Authorization": "Bearer \(apiToken)",
-        "Content-Type": "application/json",
-      ],
-      content: reqContent
-    )
+      "https://api.cloudflare.com/client/v4/accounts/\(accountIdentifier)/images/v1/\(imageId)"
+    ) { req in
+      req.headers.bearerAuthorization = .init(token: apiToken)
+      req.headers.contentType = .json
+      try req.content.encode(reqContent)
+    }
     return try response.content.decode(UpdateImageResponse.self, using: jsonDecoder)
   }
-
 }
 
 private struct UpdateImageRequestContent: Content {

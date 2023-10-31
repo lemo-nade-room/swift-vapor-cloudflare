@@ -10,12 +10,11 @@ extension CloudflareImagesClient {
   /// }
   public func deleteImage(imageId: String) async throws -> DeleteImageResponse {
     let response = try await client.delete(
-      "https://api.cloudflare.com/client/v4/accounts/\(accountIdentifier)/images/v1/\(imageId)",
-      headers: [
-        "Authorization": "Bearer \(apiToken)",
-        "Content-Type": "application/json",
-      ]
-    )
+      "https://api.cloudflare.com/client/v4/accounts/\(accountIdentifier)/images/v1/\(imageId)"
+    ) { req in
+      req.headers.bearerAuthorization = .init(token: apiToken)
+      req.headers.contentType = .json
+    }
     return try response.content.decode(DeleteImageResponse.self, using: jsonDecoder)
   }
 }
