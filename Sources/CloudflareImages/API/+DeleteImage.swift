@@ -21,13 +21,13 @@ extension CloudflareImagesClient {
 
 public struct DeleteImageResponse: Hashable, Content, CloudflareImagesResponseContent {
   public var errors: [ResponseError]
-  public var messages: [ResponseMessage]
+  public var messages: [ResponseMessage]?
   public var success: Bool
   public var result: Result?
 
   public init(
     errors: [ResponseError],
-    messages: [ResponseMessage],
+    messages: [ResponseMessage]? = nil,
     success: Bool
   ) {
     self.errors = errors

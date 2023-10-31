@@ -56,13 +56,13 @@ public struct CreateAuthenticatedDirectUploadURLV2: Hashable, Content,
   CloudflareImagesResponseContent
 {
   public var errors: [ResponseError]
-  public var messages: [ResponseMessage]
+  public var messages: [ResponseMessage]?
   public var result: Result?
   public var success: Bool
 
   public init(
     errors: [ResponseError],
-    messages: [ResponseMessage],
+    messages: [ResponseMessage]? = nil,
     result: Result? = nil,
     success: Bool
   ) {
