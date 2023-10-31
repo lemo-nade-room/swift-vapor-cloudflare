@@ -2,9 +2,18 @@
 
 ![LICENSE](https://img.shields.io/badge/license-MIT-brightgreen.svg)
 
-swift-vapor-cloudflare is a library designed to provide an interface for interacting with Cloudflare Images and Cloudflare Stream using Vapor's Swift server-side web framework. The library encapsulates the necessary requests and responses to and from the Cloudflare Images API, simplifying the process of managing images and stream on Cloudflare's platform in a Vapor application.
+## Overview
 
-## Features
+The `swift-vapor-cloudflare` library is a powerful extension to the Server-Side Swift framework, Vapor. Designed with simplicity and efficiency in mind, this library provides seamless integration with Cloudflare's robust suite of services, specifically focusing on Cloudflare Images and Cloudflare Stream.
+
+### Key Features:
+1. **Swift Native Integration**: Crafted with Swift developers in mind, `swift-vapor-cloudflare` aligns perfectly with Swift's conventions, ensuring a smooth development experience.
+2. **Simplified API Calls**: No more manual and tedious API requests. This library abstracts the complexity, making it a breeze to interact with Cloudflare services.
+3. **Optimized for Vapor**: If you're a Vapor enthusiast, integrating Cloudflare's functionalities into your project has never been easier.
+
+Whether you're building a media-rich web application or striving for optimal content delivery, `swift-vapor-cloudflare` is your go-to library for a more streamlined and effective development process.
+
+## Supported APIs
 
 ### Cloudflare Images
 
