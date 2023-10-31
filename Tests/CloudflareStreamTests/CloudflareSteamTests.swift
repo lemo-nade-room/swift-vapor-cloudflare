@@ -8,9 +8,15 @@ final class CloudflareSteamTests: XCTestCase {
     let app = prepareApplication()
     defer { app.shutdown() }
 
-    let result = try await app.cloudflareStream.listVideos()
+    _ = try await app.cloudflareStream.listVideos()
+  }
 
-    print(result)
+  func testUploadVideosViaDirectUploadURLs() async throws {
+    let app = prepareApplication()
+    defer { app.shutdown() }
+
+    _ = try await app.cloudflareStream.uploadVideosViaDirectUploadURLsExpiryByInterval(
+      expiry: 3 * 60, maxDurationSeconds: 30)
   }
 
   private func prepareApplication() -> Application {

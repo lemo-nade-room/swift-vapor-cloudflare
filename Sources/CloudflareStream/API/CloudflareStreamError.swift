@@ -4,7 +4,7 @@ import Vapor
 public struct CloudflareStreamError: Error, DebuggableError, AbortError, Hashable, Content {
 
   public var errors: [ResponseError]
-  public var messages: [ResponseMessage]
+  public var messages: [ResponseMessage]?
   public var status: HTTPStatus { .internalServerError }
 
   public var reason: String {
@@ -13,7 +13,7 @@ public struct CloudflareStreamError: Error, DebuggableError, AbortError, Hashabl
 
   public init(
     errors: [ResponseError],
-    messages: [ResponseMessage]
+    messages: [ResponseMessage]? = nil
   ) {
     self.errors = errors
     self.messages = messages
@@ -24,16 +24,16 @@ protocol CloudflareStreamResponseContent: Hashable, Content {
   associatedtype R
   var success: Bool { get }
   var errors: [ResponseError] { get }
-  var messages: [ResponseMessage] { get }
+  var messages: [ResponseMessage]? { get }
   var result: R? { get }
 }
 
-public struct ResponseError: Hashable, Content {
+public struct ResponseError: Hashable, Content, Sendable {
   public var code: Int
   public var message: String
 }
 
-public struct ResponseMessage: Hashable, Content {
+public struct ResponseMessage: Hashable, Content, Sendable {
   public var code: Int
   public var message: String
 }

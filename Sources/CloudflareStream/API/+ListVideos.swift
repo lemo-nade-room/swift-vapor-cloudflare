@@ -41,8 +41,8 @@ public enum ListVideosType: String, Hashable, Content, CaseIterable {
   case vod, live
 }
 
-public struct ListVideos: Hashable, Content {
-  public var errors: [ResponseError]?
+public struct ListVideos: Hashable, Content, CloudflareStreamResponseContent {
+  public var errors: [ResponseError]
   public var messages: [ResponseMessage]?
   public var result: [Result]?
   public var success: Bool
