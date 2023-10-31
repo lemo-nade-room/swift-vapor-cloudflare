@@ -8,3 +8,5 @@ DerivedData/
 .netrc
 .idea
 Package.resolved
+.env
+env.swift
