@@ -8,11 +8,14 @@ final class CloudflareImagesTests: XCTestCase {
     defer { app.shutdown() }
     app.cloudflareImages = .init(
       client: app.client,
-      accountIdentifier: Environment.get("CLOUDFLARE_IMAGES_ACCOUNT_IDENTIFIER")!,
-      apiToken: Environment.get("CLOUDFLARE_IMAGES_API_TOKEN")!
+      accountIdentifier: accountIdentifier,
+      apiToken: apiToken
     )
 
-    _ = try await app.cloudflareImages.listImagesV2()
+    let result = try await app.cloudflareImages.listImagesV2()
+
+    print("⭐️")
+    print(result)
   }
 
   func testCreateAuthenticatedDirectUploadURLV2() async throws {
@@ -20,14 +23,16 @@ final class CloudflareImagesTests: XCTestCase {
     defer { app.shutdown() }
     app.cloudflareImages = .init(
       client: app.client,
-      accountIdentifier: Environment.get("CLOUDFLARE_IMAGES_ACCOUNT_IDENTIFIER")!,
-      apiToken: Environment.get("CLOUDFLARE_IMAGES_API_TOKEN")!
+      accountIdentifier: accountIdentifier,
+      apiToken: apiToken
     )
 
-    _ = try await app.cloudflareImages.createAuthenticatedDirectUploadURLV2(
-      expiry: 3 /*min*/ * 60 /*sec/min*/,
-      requireSignedURLs: true
+    let result = try await app.cloudflareImages.createAuthenticatedDirectUploadURLV2(
+      expiry: 3 /*min*/ * 60 /*sec/min*/
     )
+
+    print("💚 direct")
+    print(result)
   }
 
   func testImageDetails() async throws {
@@ -35,12 +40,15 @@ final class CloudflareImagesTests: XCTestCase {
     defer { app.shutdown() }
     app.cloudflareImages = .init(
       client: app.client,
-      accountIdentifier: Environment.get("CLOUDFLARE_IMAGES_ACCOUNT_IDENTIFIER")!,
-      apiToken: Environment.get("CLOUDFLARE_IMAGES_API_TOKEN")!
+      accountIdentifier: accountIdentifier,
+      apiToken: apiToken
     )
 
-    _ = try await app.cloudflareImages.imageDetails(
-      imageId: "139999a3-edd4-4988-1a1e-f457ccc43401")
+    let detail = try await app.cloudflareImages.imageDetails(
+      imageId: "eb32dce5-11c0-4cae-0c8d-9103d15b7100")
+
+    print("💛")
+    print(detail)
   }
 
   func testDeleteImage() async throws {
@@ -48,8 +56,8 @@ final class CloudflareImagesTests: XCTestCase {
     defer { app.shutdown() }
     app.cloudflareImages = .init(
       client: app.client,
-      accountIdentifier: Environment.get("CLOUDFLARE_IMAGES_ACCOUNT_IDENTIFIER")!,
-      apiToken: Environment.get("CLOUDFLARE_IMAGES_API_TOKEN")!
+      accountIdentifier: accountIdentifier,
+      apiToken: apiToken
     )
 
     _ = try await app.cloudflareImages.deleteImage(
@@ -62,8 +70,8 @@ final class CloudflareImagesTests: XCTestCase {
     defer { app.shutdown() }
     app.cloudflareImages = .init(
       client: app.client,
-      accountIdentifier: Environment.get("CLOUDFLARE_IMAGES_ACCOUNT_IDENTIFIER")!,
-      apiToken: Environment.get("CLOUDFLARE_IMAGES_API_TOKEN")!
+      accountIdentifier: accountIdentifier,
+      apiToken: apiToken
     )
 
     _ = try await app.cloudflareImages.updateImage(

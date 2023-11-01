@@ -21,7 +21,7 @@ extension CloudflareImagesClient {
     let response = try await client.post(
       "https://api.cloudflare.com/client/v4/accounts/\(accountIdentifier)/images/v2/direct_upload"
     ) { req in
-      req.headers = ["Authorization": "Bearer \(apiToken)"]
+      req.headers.bearerAuthorization = bearer
       try req.content.encode(reqContent, as: .formData)
     }
     return try response.content.decode(

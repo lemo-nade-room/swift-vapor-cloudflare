@@ -18,7 +18,7 @@ extension CloudflareImagesClient {
         "per_page": perPage.map(String.init),
         "sort_order": sortOrder.map(\.rawValue),
       ])
-      req.headers.bearerAuthorization = .init(token: apiToken)
+      req.headers.bearerAuthorization = bearer
       req.headers.contentType = .json
     }
     return try response.content.decode(ListImagesV2.self, using: jsonDecoder)

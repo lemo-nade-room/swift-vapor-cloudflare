@@ -12,7 +12,7 @@ extension CloudflareImagesClient {
     let response = try await client.get(
       "https://api.cloudflare.com/client/v4/accounts/\(accountIdentifier)/images/v1/\(imageId)"
     ) { req in
-      req.headers.bearerAuthorization = .init(token: apiToken)
+      req.headers.bearerAuthorization = bearer
       req.headers.contentType = .json
     }
     return try response.content.decode(ImageDetails.self, using: jsonDecoder)

@@ -12,7 +12,7 @@ extension CloudflareImagesClient {
     let response = try await client.delete(
       "https://api.cloudflare.com/client/v4/accounts/\(accountIdentifier)/images/v1/\(imageId)"
     ) { req in
-      req.headers.bearerAuthorization = .init(token: apiToken)
+      req.headers.bearerAuthorization = bearer
       req.headers.contentType = .json
     }
     return try response.content.decode(DeleteImageResponse.self, using: jsonDecoder)

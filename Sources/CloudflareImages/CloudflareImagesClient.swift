@@ -16,4 +16,8 @@ public final class CloudflareImagesClient {
     self.accountIdentifier = accountIdentifier
     self.apiToken = apiToken
   }
+
+  var bearer: BearerAuthorization {
+    .init(token: apiToken)
+  }
 }

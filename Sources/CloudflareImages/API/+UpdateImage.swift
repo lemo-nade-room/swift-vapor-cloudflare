@@ -20,7 +20,7 @@ extension CloudflareImagesClient {
     let response = try await client.patch(
       "https://api.cloudflare.com/client/v4/accounts/\(accountIdentifier)/images/v1/\(imageId)"
     ) { req in
-      req.headers.bearerAuthorization = .init(token: apiToken)
+      req.headers.bearerAuthorization = bearer
       req.headers.contentType = .json
       try req.content.encode(reqContent)
     }
