@@ -39,7 +39,7 @@ extension CloudflareImagesClient {
     requireSignedURLs: Bool? = nil
   ) async throws -> CreateAuthenticatedDirectUploadURLV2 {
     try await createAuthenticatedDirectUploadURLV2(
-      expiry: expiry.map { Date(timeIntervalSinceNow: $0) },
+      expiry: expiryInterval.map { Date(timeIntervalSinceNow: $0) },
       metadata: metadata,
       requireSignedURLs: requireSignedURLs
     )
