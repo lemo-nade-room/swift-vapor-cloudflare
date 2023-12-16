@@ -13,7 +13,7 @@ extension CloudflareImagesClient {
     metadata: [String: String]? = nil,
     requireSignedURLs: Bool? = nil
   ) async throws -> CreateAuthenticatedDirectUploadURLV2 {
-    let reqContent = RequestContent(
+    let reqContent = try RequestContent(
       expiry: expiry.map { dateFormatterRFC3339.string(from: $0) },
       metadata: metadata,
       requireSignedURLs: requireSignedURLs
@@ -34,7 +34,7 @@ extension CloudflareImagesClient {
   /// - https://developers.cloudflare.com/api/operations/cloudflare-images-create-authenticated-direct-upload-url-v-2
   /// }
   public func createAuthenticatedDirectUploadURLV2(
-    expiry: TimeInterval? = nil,
+    expiryInterval: TimeInterval? = nil,
     metadata: [String: String]? = nil,
     requireSignedURLs: Bool? = nil
   ) async throws -> CreateAuthenticatedDirectUploadURLV2 {
@@ -48,8 +48,16 @@ extension CloudflareImagesClient {
 
 private struct RequestContent: Content {
   var expiry: String?
-  var metadata: [String: String]?
+  var metadata: String?
   var requireSignedURLs: Bool?
+
+  init(expiry: String? = nil, metadata: [String: String]? = nil, requireSignedURLs: Bool? = nil)
+    throws
+  {
+    self.expiry = expiry
+    self.metadata = try metadata.map(createJSONString)
+    self.requireSignedURLs = requireSignedURLs
+  }
 }
 
 public struct CreateAuthenticatedDirectUploadURLV2: Hashable, Content,

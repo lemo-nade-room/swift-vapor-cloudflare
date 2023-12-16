@@ -13,7 +13,7 @@ extension CloudflareImagesClient {
     metadata: [String: String]? = nil,
     requireSignedURLs: Bool? = nil
   ) async throws -> UpdateImageResponse {
-    let reqContent = UpdateImageRequestContent(
+    let reqContent = try UpdateImageRequestContent(
       metadata: metadata,
       requireSignedURLs: requireSignedURLs
     )
@@ -29,8 +29,13 @@ extension CloudflareImagesClient {
 }
 
 private struct UpdateImageRequestContent: Content {
-  var metadata: [String: String]?
+  var metadata: String?
   var requireSignedURLs: Bool?
+
+  init(metadata: [String: String]? = nil, requireSignedURLs: Bool? = nil) throws {
+    self.metadata = try metadata.map(createJSONString)
+    self.requireSignedURLs = requireSignedURLs
+  }
 }
 
 public struct UpdateImageResponse: Hashable, Content, CloudflareImagesResponseContent {

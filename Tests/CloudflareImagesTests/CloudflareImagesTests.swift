@@ -28,7 +28,10 @@ final class CloudflareImagesTests: XCTestCase {
     )
 
     let result = try await app.cloudflareImages.createAuthenticatedDirectUploadURLV2(
-      expiry: 3 /*min*/ * 60 /*sec/min*/
+      expiryInterval: 3 /*min*/ * 60 /*sec/min*/,
+      metadata: [
+        "env": "hello"
+      ]
     )
 
     print("💚 direct")

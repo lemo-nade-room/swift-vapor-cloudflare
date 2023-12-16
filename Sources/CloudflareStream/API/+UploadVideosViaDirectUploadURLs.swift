@@ -77,11 +77,28 @@ private struct VideoUploadRequest: Content {
   var creator: String?
   var expiry: Date?
   var maxDurationSeconds: Int
-  var meta: [String: String]?
+  var meta: String?
   var requireSignedURLs: Bool?
   var scheduledDeletion: Date?
   var thumbnailTimestampPct: Double?
   var watermark: WaterMark?
+
+  init(
+    allowedOrigins: [String]? = nil, creator: String? = nil, expiry: Date? = nil,
+    maxDurationSeconds: Int, meta: [String: String]? = nil, requireSignedURLs: Bool? = nil,
+    scheduledDeletion: Date? = nil, thumbnailTimestampPct: Double? = nil,
+    watermark: WaterMark? = nil
+  ) throws {
+    self.allowedOrigins = allowedOrigins
+    self.creator = creator
+    self.expiry = expiry
+    self.maxDurationSeconds = maxDurationSeconds
+    self.meta = try meta.map(createJSONString)
+    self.requireSignedURLs = requireSignedURLs
+    self.scheduledDeletion = scheduledDeletion
+    self.thumbnailTimestampPct = thumbnailTimestampPct
+    self.watermark = watermark
+  }
 
   struct WaterMark: Content {
     var uid: String
